@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curise Booking</title>
+    <title>Cruise Booking</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
@@ -31,7 +31,9 @@
 
         <div class="booking-content">
             <h1>Cruise Queen</h1>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book./p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book./p>
         </div>
 
 
@@ -39,7 +41,7 @@
             <h3>Book Ocean Time</h3>
             <div class="input-group">
                 <label for="">Flying From</label>
-                <input class="inp-style" type="text" name="" placeholder="Dhake, Bangladesh">
+                <input class="inp-style" type="text" name="" placeholder="Dhaka, Bangladesh">
             </div>
             <div class="input-group">
                 <label for="">Flying To</label>
@@ -48,7 +50,7 @@
             <div class="inputs">
                 <div class="input-group">
                     <label" for="">Departure</label>
-                    <input class="inp-style" type="date" name="">
+                        <input class="inp-style" type="date" name="">
                 </div>
                 <div class="input-group">
                     <label for="">Return</label>
@@ -58,29 +60,42 @@
             <div class="input-group f-class">
                 <div>
                     <label for="">First Class ($150)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <input id="first-class" type="text" class="form-control inp-width" value="0">
+
+
                 </div>
                 <div class="plus-minus-btn">
-                    <p>+ -</p>
+                    <button> <span onclick=" handleTicketChange('first-class',true)" class="alias">+</span></button>
+                    <button> <span onclick=" handleTicketChange('first-class',false) " class="alias">-</span></button>
+
                 </div>
+
             </div>
-            
+
             <div class="input-group f-class">
                 <div>
                     <label for="">Economy ($100)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <input id="economy-class" type="text" class="form-control inp-width" type="number" value="0">
+
+
                 </div>
-                <div class="plus-minus-btn">
-                    <p> <span>+</span> <span>-</span> </p>
+                <div class="plus-minus-btn d-flex justify-content-center">
+                    <button class="btn btn-default"> <span onclick=" handleTicketChange('economy-class',true)"
+                            class="alias">+</span></button>
+                    <button class="btn btn-default"> <span onclick=" handleTicketChange('economy-class',false)"
+                            class="alias">-</span></button>
+
                 </div>
+
             </div>
+
             <div class="calculations">
                 <div class="amount">
                     <div class="left">
                         <p>Subtotal</p>
                     </div>
                     <div class="right">
-                        <p>$500</p>
+                        <p>$<span id="sub-total">00</span> </p>
                     </div>
                 </div>
 
@@ -89,7 +104,7 @@
                         <p>Charge 10% VAT</p>
                     </div>
                     <div class="right">
-                        <p>$50</p>
+                        <p>$<span id="vat-amount">00</span> </p>
                     </div>
                 </div>
                 <hr>
@@ -98,13 +113,64 @@
                         <h4>Total</h4>
                     </div>
                     <div class="right">
-                        <p>$550</p>
+                        <p>$ <span id="final-total">00</span></p>
                     </div>
                 </div>
             </div>
-            <button class="btn-style">Book Now</button>
+            <button onclick="validateForm()" class="btn-style">Book Now</button>
         </div>
     </main>
+    <script>
+        // function for increment & decrement ticket amount validation with negative value
+        function handleTicketChange(ticket, increment) {
+            const ticketAmount = getInputElement(ticket);
+            let ticketNewAmount = ticketAmount;
+            if (increment == true) {
+                ticketNewAmount = ticketAmount + 1;
+            }
+            if (increment == false && ticketAmount > 0) {
+                ticketNewAmount = ticketAmount - 1;
+            }
+            document.getElementById(ticket).value = ticketNewAmount;
+            finalCalculation();
+        }
+
+        //function for calculating sub-total,vat,final-total
+        function finalCalculation() {
+            const firstClass = getInputElement('first-class');
+            const economyClass = getInputElement('economy-class');
+
+            const totalTicketPrice = firstClass * 150 + economyClass * 100;
+            document.getElementById('sub-total').innerHTML = totalTicketPrice;
+
+            const vat = totalTicketPrice * 0.1;
+            document.getElementById('vat-amount').innerText = vat;
+
+            const finalTotal = totalTicketPrice + vat;
+            document.getElementById('final-total').innerText = finalTotal;
+        }
+
+
+        // function for getting input-value from first-class & economy-class after clicking the Plus,minus button.
+        function getInputElement(ticket) {
+            const ticketInput = document.getElementById(ticket).value
+            const ticketAmount = parseInt(ticketInput);
+            //console.log(ticketAmount);
+            return ticketAmount;
+        }
+
+
+        //validation for empty input-value & conformation message.
+        function validateForm() {
+            if ((getInputElement('first-class') == 0) && (getInputElement('economy-class') == 0)) {
+                alert("Please, enter your ticket amount.");
+            }
+            else {
+                alert("You have booked ticket successfully! ");
+            }
+        }
+
+    </script>
 
     <!--Thank You-->
 </body>
